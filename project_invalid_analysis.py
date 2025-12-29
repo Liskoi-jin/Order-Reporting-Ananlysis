@@ -16,40 +16,40 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 高级CSS样式 - 完整统一的深色主题，修复顶部白色问题
+# 浅色主题CSS样式
 st.markdown("""
 <style>
 :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
+    --primary: #2563eb;
+    --primary-light: #3b82f6;
     --secondary: #10b981;
     --accent: #8b5cf6;
     --warning: #f59e0b;
     --danger: #ef4444;
 
-    /* 深色主题颜色 */
-    --dark-bg: #0f172a;
-    --darker-bg: #020617;
-    --sidebar-bg: #1e293b;
-    --card-bg: rgba(30, 41, 59, 0.95);
-    --card-border: rgba(99, 102, 241, 0.3);
-    --input-bg: rgba(15, 23, 42, 0.8);
+    /* 浅色主题颜色 */
+    --light-bg: #f8fafc;
+    --lighter-bg: #ffffff;
+    --sidebar-bg: #f1f5f9;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --input-bg: #ffffff;
 
     /* 文字颜色 - 高对比度 */
-    --text-primary: #ffffff;
-    --text-secondary: #e2e8f0;
-    --text-muted: #94a3b8;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
 
     /* 其他变量 */
-    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-    --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.6);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --transition: all 0.3s ease;
 
     /* 渐变色 */
-    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
 }
 
 /* ===== 基础重置 ===== */
@@ -62,7 +62,7 @@ st.markdown("""
 /* ===== 修复Streamlit顶部白色区域 - 重要！ ===== */
 /* 主应用容器 */
 .stApp {
-    background: var(--dark-bg) !important;
+    background: var(--light-bg) !important;
     color: var(--text-primary) !important;
     font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif !important;
     font-size: 16px !important;
@@ -73,9 +73,9 @@ st.markdown("""
 
 /* 修复顶部工具栏背景 */
 header[data-testid="stHeader"] {
-    background: var(--darker-bg) !important;
-    background-color: var(--darker-bg) !important;
-    border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
+    background: var(--lighter-bg) !important;
+    background-color: var(--lighter-bg) !important;
+    border-bottom: 1px solid var(--card-border) !important;
 }
 
 /* 修复顶部工具栏内的元素 */
@@ -83,7 +83,7 @@ header[data-testid="stHeader"] * {
     background-color: transparent !important;
 }
 
-/* 强制覆盖所有Streamlit默认白色背景 */
+/* 强制覆盖所有Streamlit默认背景 */
 div[data-testid="stToolbar"],
 div[data-testid="stDecoration"],
 .stDeckGlJsonChart,
@@ -100,9 +100,9 @@ div[data-testid="stDecoration"],
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-        linear-gradient(135deg, var(--dark-bg) 0%, #1e1b4b 100%);
+        radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+        linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
     z-index: -2;
     opacity: 0.8;
 }
@@ -112,7 +112,6 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary) !important;
     font-weight: 700 !important;
     margin-bottom: 1rem !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
     line-height: 1.3 !important;
 }
 
@@ -155,7 +154,7 @@ strong, b {
 [data-testid="stSidebar"] {
     background: var(--sidebar-bg) !important;
     background-color: var(--sidebar-bg) !important;
-    border-right: 1px solid rgba(99, 102, 241, 0.2) !important;
+    border-right: 1px solid var(--card-border) !important;
     padding: 20px 0 !important;
 }
 
@@ -177,54 +176,66 @@ strong, b {
 
 /* 侧边栏分割线 */
 [data-testid="stSidebar"] hr {
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: var(--card-border) !important;
     margin: 1.5rem 0 !important;
 }
 
-/* ===== 侧边栏导航菜单样式 ===== */
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.sidebar-nav-item {
-    display: flex;
-    align-items: center;
-    padding: 14px 20px;
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    border-radius: 12px;
-    color: var(--text-secondary) !important;
-    text-decoration: none !important;
-    transition: var(--transition) !important;
-    cursor: pointer;
+/* ===== 侧边栏按钮样式 ===== */
+/* 通用按钮样式 */
+.stButton > button {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
+    padding: 12px 20px !important;
     font-weight: 500 !important;
     font-size: 16px !important;
+    transition: var(--transition) !important;
+    box-shadow: var(--shadow) !important;
+    width: 100% !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
 }
 
-.sidebar-nav-item:hover {
-    background: rgba(99, 102, 241, 0.15) !important;
+/* 按钮悬停效果 */
+.stButton > button:hover {
+    background: rgba(37, 99, 235, 0.05) !important;
     border-color: var(--primary) !important;
     transform: translateX(5px) !important;
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: var(--shadow-hover) !important;
     color: var(--text-primary) !important;
 }
 
-.sidebar-nav-item.active {
+/* 激活状态的按钮 */
+.stButton > button[kind="primary"] {
     background: var(--gradient-primary) !important;
     border-color: var(--primary) !important;
     color: white !important;
-    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3) !important;
     font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
 }
 
-.sidebar-nav-icon {
-    margin-right: 12px;
-    font-size: 1.2rem;
-    width: 24px;
-    text-align: center;
+.stButton > button[kind="primary"]:hover {
+    background: var(--gradient-primary) !important;
+    transform: translateX(5px) !important;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3) !important;
+    color: white !important;
+}
+
+/* 非激活状态的按钮 */
+.stButton > button[kind="secondary"] {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-secondary) !important;
+}
+
+.stButton > button[kind="secondary"]:hover {
+    background: rgba(37, 99, 235, 0.05) !important;
+    border-color: var(--primary) !important;
+    color: var(--text-primary) !important;
 }
 
 /* ===== 表单控件样式 ===== */
@@ -247,7 +258,7 @@ strong, b {
 .stTextInput > div > div > input,
 .stNumberInput > div > div > input {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
     padding: 12px 16px !important;
@@ -258,14 +269,14 @@ strong, b {
 .stTextInput > div > div > input:focus,
 .stNumberInput > div > div > input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
     outline: none !important;
 }
 
 /* 下拉选择框 */
 .stSelectbox > div > div {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
 }
@@ -276,7 +287,7 @@ strong, b {
 
 /* 滑块 */
 .stSlider > div > div > div {
-    background: rgba(99, 102, 241, 0.2) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
 }
 
 .stSlider > div > div > div > div {
@@ -286,7 +297,7 @@ strong, b {
 /* 复选框 */
 .stCheckbox > label > div:first-child {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 6px !important;
 }
 
@@ -297,7 +308,7 @@ strong, b {
 /* 单选按钮 */
 .stRadio > div {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     padding: 15px !important;
 }
@@ -309,14 +320,14 @@ strong, b {
 /* 文件上传器 */
 .stFileUploader {
     background: var(--card-bg) !important;
-    border: 2px dashed rgba(99, 102, 241, 0.4) !important;
+    border: 2px dashed rgba(37, 99, 235, 0.4) !important;
     border-radius: 15px !important;
     padding: 25px !important;
 }
 
 .stFileUploader:hover {
     border-color: var(--primary) !important;
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.05) !important;
 }
 
 /* ===== 卡片样式 ===== */
@@ -328,7 +339,6 @@ strong, b {
     margin-bottom: 20px !important;
     box-shadow: var(--shadow) !important;
     transition: var(--transition) !important;
-    backdrop-filter: blur(10px) !important;
 }
 
 .custom-card:hover {
@@ -337,9 +347,9 @@ strong, b {
     border-color: var(--primary) !important;
 }
 
-/* ===== 按钮样式 ===== */
-/* 主要按钮 */
-.stButton > button {
+/* ===== 主要按钮样式（主内容区域） ===== */
+/* 主内容区域的主要按钮 */
+div[data-testid="stVerticalBlock"]:not([data-testid="stSidebar"]) .stButton > button {
     background: var(--gradient-primary) !important;
     border: none !important;
     border-radius: 10px !important;
@@ -348,13 +358,15 @@ strong, b {
     font-weight: 600 !important;
     font-size: 16px !important;
     transition: var(--transition) !important;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3) !important;
+    box-shadow: var(--shadow) !important;
     width: 100% !important;
+    text-align: center !important;
+    display: block !important;
 }
 
-.stButton > button:hover {
+div[data-testid="stVerticalBlock"]:not([data-testid="stSidebar"]) .stButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4) !important;
+    box-shadow: var(--shadow-hover) !important;
     color: white !important;
 }
 
@@ -368,13 +380,13 @@ strong, b {
     font-weight: 600 !important;
     font-size: 16px !important;
     transition: var(--transition) !important;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+    box-shadow: var(--shadow) !important;
     width: 100% !important;
 }
 
 .stDownloadButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+    box-shadow: var(--shadow-hover) !important;
 }
 
 /* ===== 表格样式 ===== */
@@ -392,21 +404,21 @@ strong, b {
 }
 
 .stDataFrame thead th {
-    background: rgba(99, 102, 241, 0.3) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
     color: var(--text-primary) !important;
     font-weight: 700 !important;
     padding: 15px !important;
-    border-bottom: 2px solid rgba(99, 102, 241, 0.5) !important;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.3) !important;
 }
 
 .stDataFrame tbody td {
     color: var(--text-secondary) !important;
     padding: 12px 15px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 1px solid var(--card-border) !important;
 }
 
 .stDataFrame tbody tr:hover {
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.05) !important;
 }
 
 /* Pandas数据表格 */
@@ -418,21 +430,21 @@ strong, b {
 }
 
 .dataframe thead th {
-    background: rgba(99, 102, 241, 0.3) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
     color: var(--text-primary) !important;
     font-weight: 700 !important;
     padding: 15px !important;
-    border-bottom: 2px solid rgba(99, 102, 241, 0.5) !important;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.3) !important;
 }
 
 .dataframe tbody td {
     color: var(--text-secondary) !important;
     padding: 12px 15px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 1px solid var(--card-border) !important;
 }
 
 .dataframe tbody tr:hover {
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.05) !important;
 }
 
 /* ===== 选项卡样式 ===== */
@@ -456,7 +468,7 @@ strong, b {
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.05) !important;
     color: var(--text-primary) !important;
 }
 
@@ -464,7 +476,7 @@ strong, b {
     background: var(--gradient-primary) !important;
     color: white !important;
     font-weight: 600 !important;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+    box-shadow: var(--shadow) !important;
 }
 
 /* ===== 进度条样式 ===== */
@@ -474,12 +486,11 @@ strong, b {
 
 /* ===== 警告提示样式 ===== */
 .stAlert {
-    background: rgba(30, 41, 59, 0.9) !important;
-    border: 1px solid rgba(99, 102, 241, 0.3) !important;
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
     border-radius: 12px !important;
     color: var(--text-secondary) !important;
     border-left: 4px solid !important;
-    backdrop-filter: blur(10px) !important;
 }
 
 .stAlert [data-testid="stMarkdownContainer"] {
@@ -504,7 +515,7 @@ div[data-testid="stAlert"] > div:first-child {
 }
 
 .streamlit-expanderContent {
-    background: rgba(30, 41, 59, 0.8) !important;
+    background: var(--sidebar-bg) !important;
     border: 1px solid var(--card-border) !important;
     border-radius: 0 0 10px 10px !important;
     border-top: none !important;
@@ -518,7 +529,7 @@ div[data-testid="stAlert"] > div:first-child {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(30, 41, 59, 0.5);
+    background: rgba(241, 245, 249, 0.5);
     border-radius: 5px;
 }
 
@@ -530,7 +541,7 @@ div[data-testid="stAlert"] > div:first-child {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+    background: var(--primary-light);
 }
 
 /* ===== 统计卡片 ===== */
@@ -542,7 +553,6 @@ div[data-testid="stAlert"] > div:first-child {
     text-align: center !important;
     transition: var(--transition) !important;
     height: 100% !important;
-    backdrop-filter: blur(10px) !important;
 }
 
 .stat-card:hover {
@@ -572,13 +582,13 @@ div[data-testid="stAlert"] > div:first-child {
 .icon-wrapper {
     width: 60px;
     height: 60px;
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(37, 99, 235, 0.1);
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    border: 2px solid rgba(99, 102, 241, 0.3);
+    border: 2px solid rgba(37, 99, 235, 0.2);
 }
 
 .icon-wrapper i {
@@ -588,19 +598,18 @@ div[data-testid="stAlert"] > div:first-child {
 
 /* ===== 欢迎卡片 ===== */
 .welcome-card {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.15)) !important;
-    border: 1px solid rgba(99, 102, 241, 0.3) !important;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(59, 130, 246, 0.05)) !important;
+    border: 1px solid rgba(37, 99, 235, 0.2) !important;
     border-radius: 20px !important;
     padding: 40px !important;
     margin-bottom: 40px !important;
     text-align: center !important;
-    backdrop-filter: blur(20px) !important;
 }
 
 /* ===== 上传区域卡片 ===== */
 .upload-card {
     background: var(--card-bg) !important;
-    border: 2px dashed rgba(99, 102, 241, 0.4) !important;
+    border: 2px dashed rgba(37, 99, 235, 0.4) !important;
     border-radius: 20px !important;
     padding: 40px 30px !important;
     text-align: center !important;
@@ -611,7 +620,7 @@ div[data-testid="stAlert"] > div:first-child {
 
 .upload-card:hover {
     border-color: var(--primary) !important;
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.05) !important;
     transform: translateY(-5px) !important;
 }
 
@@ -622,7 +631,6 @@ div[data-testid="stAlert"] > div:first-child {
     border-radius: 15px !important;
     padding: 20px !important;
     margin-bottom: 20px !important;
-    backdrop-filter: blur(10px) !important;
     box-shadow: var(--shadow) !important;
     height: 100% !important;
 }
@@ -649,7 +657,7 @@ div[data-testid="stAlert"] > div:first-child {
     border-radius: 2px;
 }
 
-/* ===== 修复所有白色背景问题 ===== */
+/* ===== 修复所有背景问题 ===== */
 /* 主内容区域 */
 .main .block-container {
     background: transparent !important;
@@ -663,7 +671,7 @@ div[data-testid="stColumn"] {
     background: transparent !important;
 }
 
-/* 移除所有默认白色背景 */
+/* 移除所有默认背景 */
 div[style*="background-color: white"],
 div[style*="background: white"],
 .bg-white {
@@ -721,9 +729,9 @@ div[style*="background: white"],
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
 }
 
 .pulse {
@@ -744,17 +752,11 @@ div[style*="background: white"],
                 var(--gradient-primary) border-box;
 }
 
-.glass-effect {
-    background: rgba(30, 41, 59, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 /* ===== 修复日期时间选择器 - 重要修复 ===== */
 /* 日期输入框 */
 .stDateInput > div > div > input {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
     padding: 12px 16px !important;
@@ -764,7 +766,7 @@ div[style*="background: white"],
 
 .stDateInput > div > div > input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
     outline: none !important;
 }
 
@@ -776,7 +778,7 @@ div[data-baseweb="popover"] {
     border-radius: 10px !important;
 }
 
-/* 日历容器 - 深色背景 */
+/* 日历容器 */
 div[data-baseweb="calendar"] {
     background-color: var(--card-bg) !important;
     background: var(--card-bg) !important;
@@ -805,8 +807,8 @@ div[data-baseweb="calendar"] button {
 }
 
 div[data-baseweb="calendar"] button:hover {
-    background-color: rgba(99, 102, 241, 0.2) !important;
-    background: rgba(99, 102, 241, 0.2) !important;
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
 }
 
 div[data-baseweb="calendar"] button[aria-selected="true"] {
@@ -817,8 +819,8 @@ div[data-baseweb="calendar"] button[aria-selected="true"] {
 
 /* 日历头部 */
 div[data-baseweb="calendar"] > div:first-child {
-    background-color: rgba(99, 102, 241, 0.1) !important;
-    background: rgba(99, 102, 241, 0.1) !important;
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
     border-bottom: 1px solid var(--card-border) !important;
     color: var(--text-primary) !important;
 }
@@ -826,7 +828,7 @@ div[data-baseweb="calendar"] > div:first-child {
 /* 时间选择器弹出框 */
 .stTimeInput > div > div > input {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
     padding: 12px 16px !important;
@@ -836,7 +838,7 @@ div[data-baseweb="calendar"] > div:first-child {
 
 .stTimeInput > div > div > input:focus {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
     outline: none !important;
 }
 
@@ -856,19 +858,19 @@ div[role="listbox"][data-baseweb="select"] > div {
 }
 
 div[role="listbox"][data-baseweb="select"] > div:hover {
-    background-color: rgba(99, 102, 241, 0.1) !important;
-    background: rgba(99, 102, 241, 0.1) !important;
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
 }
 
 div[role="listbox"][data-baseweb="select"] > div[aria-selected="true"] {
-    background-color: rgba(99, 102, 241, 0.2) !important;
-    background: rgba(99, 102, 241, 0.2) !important;
+    background-color: rgba(37, 99, 235, 0.2) !important;
+    background: rgba(37, 99, 235, 0.2) !important;
 }
 
 /* ===== 修复多选框 ===== */
 .stMultiSelect > div > div {
     background: var(--input-bg) !important;
-    border: 2px solid rgba(99, 102, 241, 0.3) !important;
+    border: 2px solid var(--card-border) !important;
     border-radius: 10px !important;
     color: var(--text-primary) !important;
 }
@@ -896,7 +898,7 @@ a {
 }
 
 a:hover {
-    color: #a78bfa !important;
+    color: var(--primary-light) !important;
     text-decoration: underline !important;
 }
 
@@ -912,7 +914,7 @@ div[role="option"] {
 }
 
 div[role="option"]:hover {
-    background: rgba(99, 102, 241, 0.1) !important;
+    background: rgba(37, 99, 235, 0.1) !important;
 }
 
 /* ===== 修复所有日期时间选择器的占位符 ===== */
@@ -942,8 +944,8 @@ div[role="option"]:hover {
     display: block !important;
 }
 
-/* ===== 强制修复白色背景 ===== */
-/* 强制所有日历相关的白色背景改为深色 */
+/* ===== 强制修复所有背景 ===== */
+/* 强制所有日历相关的背景改为浅色 */
 div[data-baseweb="calendar"] div[style*="background-color: white"],
 div[data-baseweb="calendar"] div[style*="background: white"],
 div[data-baseweb="popover"] div[style*="background-color: white"],
@@ -964,7 +966,7 @@ div[data-baseweb="popover"] > div {
     background: var(--card-bg) !important;
 }
 
-/* 修复Streamlit默认的白色背景 */
+/* 修复Streamlit默认的背景 */
 div[style*="background: rgb(255, 255, 255)"],
 div[style*="background-color: rgb(255, 255, 255)"],
 div[style*="background: #ffffff"],
@@ -973,7 +975,7 @@ div[style*="background-color: #ffffff"] {
     background-color: var(--card-bg) !important;
 }
 
-/* ===== 极端解决方案：强制覆盖所有可能的白色背景 ===== */
+/* ===== 极端解决方案：强制覆盖所有可能的背景 ===== */
 /* 使用!important强制覆盖 */
 div[data-baseweb="popover"] *,
 div[data-baseweb="calendar"] *,
@@ -989,7 +991,7 @@ div[role="listbox"] > div {
     background: transparent !important;
 }
 
-/* 覆盖Streamlit的默认白色背景 */
+/* 覆盖Streamlit的默认背景 */
 div[style*="background"],
 div[style*="background-color"] {
     background-color: var(--card-bg) !important;
@@ -1001,12 +1003,105 @@ div[data-baseweb="popover"] > div > div {
     background-color: var(--card-bg) !important;
     background: var(--card-bg) !important;
 }
+
+/* ===== 更新Plotly图表样式 ===== */
+.js-plotly-plot .plotly .modebar-btn path {
+    fill: var(--text-secondary) !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn:hover path {
+    fill: var(--primary) !important;
+}
+
+.js-plotly-plot .plotly .modebar {
+    background-color: var(--card-bg) !important;
+}
+
+/* ===== 更新表格样式 ===== */
+table {
+    background-color: var(--card-bg) !important;
+}
+
+th {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: var(--text-primary) !important;
+}
+
+td {
+    color: var(--text-secondary) !important;
+}
+
+/* ===== 侧边栏按钮图标 ===== */
+.sidebar-button-icon {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    width: 24px;
+    text-align: center;
+}
+
+/* ===== 修复侧边栏按钮样式 ===== */
+/* 确保侧边栏按钮与其他按钮样式区分 */
+[data-testid="stSidebar"] .stButton > button {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 10px !important;
+    color: var(--text-primary) !important;
+    padding: 12px 20px !important;
+    font-weight: 500 !important;
+    font-size: 16px !important;
+    transition: var(--transition) !important;
+    box-shadow: var(--shadow) !important;
+    width: 100% !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+}
+
+/* 侧边栏按钮悬停效果 */
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(37, 99, 235, 0.05) !important;
+    border-color: var(--primary) !important;
+    transform: translateX(5px) !important;
+    box-shadow: var(--shadow-hover) !important;
+    color: var(--text-primary) !important;
+}
+
+/* 侧边栏激活状态的按钮 */
+[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+    background: var(--gradient-primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
+}
+
+[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+    background: var(--gradient-primary) !important;
+    transform: translateX(5px) !important;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3) !important;
+    color: white !important;
+}
+
+/* 侧边栏非激活状态的按钮 */
+[data-testid="stSidebar"] .stButton > button[kind="secondary"] {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {
+    background: rgba(37, 99, 235, 0.05) !important;
+    border-color: var(--primary) !important;
+    color: var(--text-primary) !important;
+}
 </style>
 
 <script>
 // 通过JavaScript强制设置日期时间选择器的背景色
 document.addEventListener('DOMContentLoaded', function() {
-    function forceDarkTheme() {
+    function forceLightTheme() {
         // 查找所有日期时间选择器元素
         const popovers = document.querySelectorAll('[data-baseweb="popover"]');
         const calendars = document.querySelectorAll('[data-baseweb="calendar"]');
@@ -1014,29 +1109,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 设置弹出框背景
         popovers.forEach(el => {
-            el.style.backgroundColor = 'rgba(30, 41, 59, 0.95)';
-            el.style.background = 'rgba(30, 41, 59, 0.95)';
+            el.style.backgroundColor = '#ffffff';
+            el.style.background = '#ffffff';
         });
 
         // 设置日历背景
         calendars.forEach(el => {
-            el.style.backgroundColor = 'rgba(30, 41, 59, 0.95)';
-            el.style.background = 'rgba(30, 41, 59, 0.95)';
-            el.style.color = '#ffffff';
+            el.style.backgroundColor = '#ffffff';
+            el.style.background = '#ffffff';
+            el.style.color = '#1e293b';
         });
 
         // 设置时间选择器背景
         timePickers.forEach(el => {
-            el.style.backgroundColor = 'rgba(30, 41, 59, 0.95)';
-            el.style.background = 'rgba(30, 41, 59, 0.95)';
+            el.style.backgroundColor = '#ffffff';
+            el.style.background = '#ffffff';
         });
     }
 
     // 初始执行
-    forceDarkTheme();
+    forceLightTheme();
 
     // 定时执行，确保新创建的元素也被设置
-    setInterval(forceDarkTheme, 1000);
+    setInterval(forceLightTheme, 1000);
 });
 </script>
 """, unsafe_allow_html=True)
@@ -1044,7 +1139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 # 应用标题
 st.markdown("""
 <div class="welcome-card fade-in">
-    <h1>📊 项目数据分析看板</h1>
+    <h1>项目数据分析看板</h1>
     <p style="font-size: 1.2rem; color: var(--text-secondary); margin-top: 10px;">
         专业的数据分析工具 | 提供完整的违规率分析和统计功能
     </p>
@@ -1079,9 +1174,6 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    # 侧边栏导航菜单
-    st.markdown('<div class="sidebar-nav">', unsafe_allow_html=True)
-
     # 上传数据文件按钮
     if st.button("📤 上传数据文件",
                  key="nav_upload",
@@ -1113,8 +1205,6 @@ with st.sidebar:
                  type="primary" if st.session_state.current_page == "分析设置" else "secondary"):
         st.session_state.current_page = "分析设置"
         st.rerun()
-
-    st.markdown('</div>', unsafe_allow_html=True)
 
     st.markdown("---")
 
@@ -1631,29 +1721,29 @@ def page_upload_data():
         <div style="overflow-x: auto; margin-top: 20px;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background: rgba(99, 102, 241, 0.2);">
-                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(99, 102, 241, 0.5);">字段名</th>
-                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(99, 102, 241, 0.5);">说明</th>
-                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(99, 102, 241, 0.5);">示例</th>
+                    <tr style="background: rgba(37, 99, 235, 0.1);">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(37, 99, 235, 0.3);">字段名</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(37, 99, 235, 0.3);">说明</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid rgba(37, 99, 235, 0.3);">示例</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <tr style="border-bottom: 1px solid var(--card-border);">
                         <td style="padding: 12px;"><code>project_name</code></td>
                         <td style="padding: 12px;">项目名称</td>
                         <td style="padding: 12px;">Q4宠物</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <tr style="border-bottom: 1px solid var(--card-border);">
                         <td style="padding: 12px;"><code>channel_name</code></td>
                         <td style="padding: 12px;">渠道名称</td>
                         <td style="padding: 12px;">清歌</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <tr style="border-bottom: 1px solid var(--card-border);">
                         <td style="padding: 12px;"><code>bonus_invalid_text</code></td>
                         <td style="padding: 12px;">无效原因</td>
                         <td style="padding: 12px;">无效-违规订单</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                    <tr style="border-bottom: 1px solid var(--card-border);">
                         <td style="padding: 12px;"><code>bonus_text</code></td>
                         <td style="padding: 12px;">奖金状态</td>
                         <td style="padding: 12px;">有效</td>
@@ -1850,10 +1940,10 @@ def page_violation_analysis():
                     height=400,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white',
+                    font_color='#1e293b',
                     legend=dict(
-                        bgcolor='rgba(30, 41, 59, 0.8)',
-                        bordercolor='rgba(99, 102, 241, 0.3)',
+                        bgcolor='rgba(255, 255, 255, 0.8)',
+                        bordercolor='rgba(37, 99, 235, 0.3)',
                         borderwidth=1
                     )
                 )
@@ -1874,10 +1964,10 @@ def page_violation_analysis():
                     height=400,
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white',
+                    font_color='#1e293b',
                     legend=dict(
-                        bgcolor='rgba(30, 41, 59, 0.8)',
-                        bordercolor='rgba(99, 102, 241, 0.3)',
+                        bgcolor='rgba(255, 255, 255, 0.8)',
+                        bordercolor='rgba(37, 99, 235, 0.3)',
                         borderwidth=1
                     )
                 )
@@ -1910,7 +2000,7 @@ def page_violation_analysis():
             top_gmv = gmv_df.nlargest(10, '预估计佣GMV')
             fig1 = go.Figure(data=[
                 go.Bar(name='预估计佣GMV', x=top_gmv['项目'], y=top_gmv['预估计佣GMV'],
-                       marker_color='#6366f1'),
+                       marker_color='#2563eb'),
                 go.Bar(name='实际计佣GMV', x=top_gmv['项目'], y=top_gmv['实际计佣GMV'],
                        marker_color='#10b981')
             ])
@@ -1921,10 +2011,10 @@ def page_violation_analysis():
                 yaxis_title='金额 (元)',
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                font_color='white',
+                font_color='#1e293b',
                 legend=dict(
-                    bgcolor='rgba(30, 41, 59, 0.8)',
-                    bordercolor='rgba(99, 102, 241, 0.3)',
+                    bgcolor='rgba(255, 255, 255, 0.8)',
+                    bordercolor='rgba(37, 99, 235, 0.3)',
                     borderwidth=1
                 )
             )
@@ -1946,10 +2036,10 @@ def page_violation_analysis():
                     barmode='stack',
                     plot_bgcolor='rgba(0,0,0,0)',
                     paper_bgcolor='rgba(0,0,0,0)',
-                    font_color='white',
+                    font_color='#1e293b',
                     legend=dict(
-                        bgcolor='rgba(30, 41, 59, 0.8)',
-                        bordercolor='rgba(99, 102, 241, 0.3)',
+                        bgcolor='rgba(255, 255, 255, 0.8)',
+                        bordercolor='rgba(37, 99, 235, 0.3)',
                         borderwidth=1
                     )
                 )
@@ -2161,16 +2251,6 @@ def page_violation_statistics():
             label_visibility="collapsed"
         )
 
-        # 下单开始时间 - 使用自定义样式
-        st.markdown('<div class="time-label" style="margin-top: 15px;">下单开始时间</div>', unsafe_allow_html=True)
-        order_start_time = st.time_input(
-            "",
-            value=datetime.min.time(),
-            key="order_start_time_stat",
-            label_visibility="collapsed"
-        )
-        order_start_dt = datetime.combine(order_start_date, order_start_time)
-
         # 下单结束日期
         st.markdown('<div class="time-label" style="margin-top: 15px;">下单结束日期</div>', unsafe_allow_html=True)
         order_end_date = st.date_input(
@@ -2182,24 +2262,18 @@ def page_violation_statistics():
             label_visibility="collapsed"
         )
 
-        # 下单结束时间
-        st.markdown('<div class="time-label" style="margin-top: 15px;">下单结束时间</div>', unsafe_allow_html=True)
-        order_end_time = st.time_input(
-            "",
-            value=datetime.max.time(),
-            key="order_end_time_stat",
-            label_visibility="collapsed"
-        )
-        order_end_dt = datetime.combine(order_end_date, order_end_time)
+        # 时间默认取 00:00:00 和 23:59:59
+        order_start_dt = datetime.combine(order_start_date, datetime.min.time())
+        order_end_dt = datetime.combine(order_end_date, datetime.max.time())
 
         st.caption(
-            f"下单时间范围: {order_start_dt.strftime('%Y-%m-%d %H:%M:%S')} 至 {order_end_dt.strftime('%Y-%m-%d %H:%M:%S')}")
+            f"下单时间范围: {order_start_dt.strftime('%Y-%m-%d')} 至 {order_end_dt.strftime('%Y-%m-%d')}")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col2:
         st.markdown("""
         <div class="time-card">
-            <h4 style="color: var(--text-primary); margin-bottom: 15px;">✅ 完成时间范围</h4>
+            <h4 style="color: var(--text-primary); margin-bottom: 15px;">✅ 查询时间范围</h4>
         """, unsafe_allow_html=True)
 
         # 获取数据中的最小和最大完成时间
@@ -2213,8 +2287,8 @@ def page_violation_statistics():
             min_finish_time = datetime.now() - timedelta(days=30)
             max_finish_time = datetime.now()
 
-        # 完成开始日期
-        st.markdown('<div class="time-label">完成开始日期</div>', unsafe_allow_html=True)
+        # 查询开始日期
+        st.markdown('<div class="time-label">查询开始日期</div>', unsafe_allow_html=True)
         finish_start_date = st.date_input(
             "",
             value=min_finish_time.date(),
@@ -2224,18 +2298,8 @@ def page_violation_statistics():
             label_visibility="collapsed"
         )
 
-        # 完成开始时间
-        st.markdown('<div class="time-label" style="margin-top: 15px;">完成开始时间</div>', unsafe_allow_html=True)
-        finish_start_time = st.time_input(
-            "",
-            value=datetime.min.time(),
-            key="finish_start_time_stat",
-            label_visibility="collapsed"
-        )
-        finish_start_dt = datetime.combine(finish_start_date, finish_start_time)
-
         # 完成结束日期
-        st.markdown('<div class="time-label" style="margin-top: 15px;">完成结束日期</div>', unsafe_allow_html=True)
+        st.markdown('<div class="time-label" style="margin-top: 15px;">查询结束日期</div>', unsafe_allow_html=True)
         finish_end_date = st.date_input(
             "",
             value=max_finish_time.date(),
@@ -2245,18 +2309,12 @@ def page_violation_statistics():
             label_visibility="collapsed"
         )
 
-        # 完成结束时间
-        st.markdown('<div class="time-label" style="margin-top: 15px;">完成结束时间</div>', unsafe_allow_html=True)
-        finish_end_time = st.time_input(
-            "",
-            value=datetime.max.time(),
-            key="finish_end_time_stat",
-            label_visibility="collapsed"
-        )
-        finish_end_dt = datetime.combine(finish_end_date, finish_end_time)
+        # 时间默认取 00:00:00 和 23:59:59
+        finish_start_dt = datetime.combine(finish_start_date, datetime.min.time())
+        finish_end_dt = datetime.combine(finish_end_date, datetime.max.time())
 
         st.caption(
-            f"完成时间范围: {finish_start_dt.strftime('%Y-%m-%d %H:%M:%S')} 至 {finish_end_dt.strftime('%Y-%m-%d %H:%M:%S')}")
+            f"查询时间范围: {finish_start_dt.strftime('%Y-%m-%d')} 至 {finish_end_dt.strftime('%Y-%m-%d')}")
         st.markdown('</div>', unsafe_allow_html=True)
 
     # 添加统计按钮
@@ -2381,10 +2439,10 @@ def page_violation_statistics():
                         height=400,
                         plot_bgcolor='rgba(0,0,0,0)',
                         paper_bgcolor='rgba(0,0,0,0)',
-                        font_color='white',
+                        font_color='#1e293b',
                         legend=dict(
-                            bgcolor='rgba(30, 41, 59, 0.8)',
-                            bordercolor='rgba(99, 102, 241, 0.3)',
+                            bgcolor='rgba(255, 255, 255, 0.8)',
+                            bordercolor='rgba(37, 99, 235, 0.3)',
                             borderwidth=1
                         )
                     )
@@ -2407,10 +2465,10 @@ def page_violation_statistics():
                         height=400,
                         plot_bgcolor='rgba(0,0,0,0)',
                         paper_bgcolor='rgba(0,0,0,0)',
-                        font_color='white',
+                        font_color='#1e293b',
                         legend=dict(
-                            bgcolor='rgba(30, 41, 59, 0.8)',
-                            bordercolor='rgba(99, 102, 241, 0.3)',
+                            bgcolor='rgba(255, 255, 255, 0.8)',
+                            bordercolor='rgba(37, 99, 235, 0.3)',
                             borderwidth=1
                         )
                     )
