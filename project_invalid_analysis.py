@@ -7,7 +7,6 @@ import os
 from collections import defaultdict
 import plotly.express as px
 import plotly.graph_objects as go
-import glob
 
 # 设置页面配置
 st.set_page_config(
@@ -17,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 高级CSS样式 - 完整统一的深色主题
+# 高级CSS样式 - 完整统一的深色主题，修复顶部白色问题
 st.markdown("""
 <style>
 :root {
@@ -60,7 +59,8 @@ st.markdown("""
     box-sizing: border-box;
 }
 
-/* Streamlit应用主体样式 */
+/* ===== 修复Streamlit顶部白色区域 - 重要！ ===== */
+/* 主应用容器 */
 .stApp {
     background: var(--dark-bg) !important;
     color: var(--text-primary) !important;
@@ -69,6 +69,26 @@ st.markdown("""
     line-height: 1.6 !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* 修复顶部工具栏背景 */
+header[data-testid="stHeader"] {
+    background: var(--darker-bg) !important;
+    background-color: var(--darker-bg) !important;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
+}
+
+/* 修复顶部工具栏内的元素 */
+header[data-testid="stHeader"] * {
+    background-color: transparent !important;
+}
+
+/* 强制覆盖所有Streamlit默认白色背景 */
+div[data-testid="stToolbar"],
+div[data-testid="stDecoration"],
+.stDeckGlJsonChart,
+.css-1dp5vir {
+    display: none !important;
 }
 
 /* 背景渐变效果 */
@@ -1102,9 +1122,9 @@ with st.sidebar:
     if st.session_state.uploaded_file is not None:
         st.success("✅ 已加载上传文件")
     elif st.session_state.local_file_path is not None:
-        st.success(f"✅ 已加载本地文件: {os.path.basename(st.session_state.local_file_path)}")
+        st.success(f"✅ 已加载本地文件")
     else:
-        st.info("📁 请先上传或选择数据文件")
+        st.info("📁 请先上传数据文件")
 
 
 # 数据解析和清洗函数
@@ -1129,27 +1149,6 @@ def parse_date(date_str):
         try:
             return datetime.strptime(date_str, fmt)
         except:
-            continue
-
-    return None
-
-
-def read_csv_safe(file_path):
-    """安全读取CSV文件"""
-    try:
-        # 先尝试直接读取
-        df = pd.read_csv(file_path)
-        return df
-    except Exception as e:
-        st.error(f"❌ 直接读取失败: {e}")
-
-    # 尝试不同编码
-    encodings = ['gbk', 'gb2312', 'utf-8', 'latin1', 'utf-8-sig']
-    for encoding in encodings:
-        try:
-            df = pd.read_csv(file_path, encoding=encoding, engine='python')
-            return df
-        except Exception as e:
             continue
 
     return None
@@ -1574,108 +1573,56 @@ def page_upload_data():
     st.markdown("""
     <div class="custom-card fade-in">
         <h2>📤 上传数据文件</h2>
-        <p>请上传CSV格式的数据文件或从本地目录选择文件</p>
+        <p>请上传CSV格式的数据文件</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # 创建两列布局
-    col1, col2 = st.columns(2)
-
-    with col1:
-        # 文件上传部分
-        st.markdown("""
-        <div class="upload-card">
-            <div class="icon-wrapper" style="margin: 0 auto 20px auto;">
-                <span style="font-size: 2rem;">📤</span>
-            </div>
-            <h3>上传数据文件</h3>
-            <p>点击上传CSV格式的数据文件</p>
+    # 文件上传部分 - 全宽显示
+    st.markdown("""
+    <div class="upload-card">
+        <div class="icon-wrapper" style="margin: 0 auto 20px auto;">
+            <span style="font-size: 2rem;">📤</span>
         </div>
-        """, unsafe_allow_html=True)
+        <h3>上传数据文件</h3>
+        <p>点击上传CSV格式的数据文件</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-        uploaded_file = st.file_uploader(
-            "选择CSV文件",
-            type=["csv"],
-            help="请上传包含项目数据的CSV文件",
-            label_visibility="collapsed"
-        )
+    uploaded_file = st.file_uploader(
+        "选择CSV文件",
+        type=["csv"],
+        help="请上传包含项目数据的CSV文件",
+        label_visibility="collapsed"
+    )
 
-        if uploaded_file is not None:
-            try:
-                # 尝试读取文件
-                with st.spinner("正在读取文件..."):
-                    df = pd.read_csv(uploaded_file)
-                    st.session_state.uploaded_file = df
-                    st.session_state.local_file_path = None
-                    st.success("✅ 文件上传成功！")
+    if uploaded_file is not None:
+        try:
+            # 尝试读取文件
+            with st.spinner("正在读取文件..."):
+                df = pd.read_csv(uploaded_file)
+                st.session_state.uploaded_file = df
+                st.session_state.local_file_path = None
+                st.success("✅ 文件上传成功！")
 
-                    # 显示文件信息
-                    st.info(f"📊 文件信息：{uploaded_file.name}")
+                # 显示文件信息
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.info(f"📊 文件：{uploaded_file.name}")
+                with col2:
                     st.info(f"📊 数据行数：{len(df):,}")
+                with col3:
                     st.info(f"📊 数据列数：{len(df.columns)}")
 
-                    # 显示列名预览
-                    with st.expander("📋 查看数据列名", expanded=False):
-                        st.write("数据列：", list(df.columns))
+                # 显示列名预览
+                with st.expander("📋 查看数据列名", expanded=False):
+                    st.write("数据列：", list(df.columns))
 
-                    # 显示数据预览
-                    with st.expander("👀 预览数据（前10行）", expanded=False):
-                        st.dataframe(df.head(10), use_container_width=True)
+                # 显示数据预览
+                with st.expander("👀 预览数据（前10行）", expanded=False):
+                    st.dataframe(df.head(10), use_container_width=True)
 
-            except Exception as e:
-                st.error(f"❌ 读取文件失败: {e}")
-
-    with col2:
-        # 本地文件选择部分
-        st.markdown("""
-        <div class="upload-card">
-            <div class="icon-wrapper" style="margin: 0 auto 20px auto;">
-                <span style="font-size: 2rem;">📁</span>
-            </div>
-            <h3>选择本地文件</h3>
-            <p>从本地目录选择已存在的文件</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # 获取当前目录的CSV文件
-        current_dir = os.getcwd()
-        csv_files = glob.glob(os.path.join(current_dir, "*.csv"))
-
-        if csv_files:
-            file_options = ["请选择..."] + [os.path.basename(f) for f in csv_files]
-            selected_file = st.selectbox("选择本地CSV文件", file_options, key="local_file_select")
-
-            if selected_file and selected_file != "请选择...":
-                # 找到完整路径
-                for file_path in csv_files:
-                    if os.path.basename(file_path) == selected_file:
-                        try:
-                            with st.spinner(f"正在读取文件: {selected_file}"):
-                                df = read_csv_safe(file_path)
-                                if df is not None:
-                                    st.session_state.local_file_path = file_path
-                                    st.session_state.uploaded_file = None
-                                    st.success(f"✅ 已加载: {selected_file}")
-
-                                    # 显示文件信息
-                                    st.info(f"📊 文件信息：{selected_file}")
-                                    st.info(f"📊 数据行数：{len(df):,}")
-                                    st.info(f"📊 数据列数：{len(df.columns)}")
-
-                                    # 显示列名预览
-                                    with st.expander("📋 查看数据列名", expanded=False):
-                                        st.write("数据列：", list(df.columns))
-
-                                    # 显示数据预览
-                                    with st.expander("👀 预览数据（前10行）", expanded=False):
-                                        st.dataframe(df.head(10), use_container_width=True)
-                                else:
-                                    st.error("❌ 读取文件失败")
-                        except Exception as e:
-                            st.error(f"❌ 读取文件失败: {e}")
-                        break
-        else:
-            st.warning("⚠️ 当前目录未找到CSV文件")
+        except Exception as e:
+            st.error(f"❌ 读取文件失败: {e}")
 
     # 数据格式要求
     st.markdown("""
@@ -1724,15 +1671,15 @@ def page_upload_data():
 
     # 导航按钮
     st.markdown("---")
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
         if st.button("🚀 开始分析", use_container_width=True, type="primary"):
-            if st.session_state.uploaded_file is not None or st.session_state.local_file_path is not None:
+            if st.session_state.uploaded_file is not None:
                 st.session_state.current_page = "违规率分析"
                 st.rerun()
             else:
-                st.warning("请先上传或选择数据文件")
+                st.warning("请先上传数据文件")
 
 
 # ==================== 页面2：违规率分析 ====================
@@ -1747,7 +1694,7 @@ def page_violation_analysis():
 
     # 检查是否有数据文件
     if st.session_state.uploaded_file is None and st.session_state.local_file_path is None:
-        st.warning("⚠️ 请先上传或选择数据文件")
+        st.warning("⚠️ 请先上传数据文件")
         if st.button("📤 前往上传数据文件", use_container_width=True):
             st.session_state.current_page = "上传数据文件"
             st.rerun()
@@ -1759,7 +1706,7 @@ def page_violation_analysis():
         if st.session_state.uploaded_file is not None:
             df = st.session_state.uploaded_file
         elif st.session_state.local_file_path is not None:
-            df = read_csv_safe(st.session_state.local_file_path)
+            df = pd.read_csv(st.session_state.local_file_path)
     except Exception as e:
         st.error(f"❌ 读取数据失败: {e}")
         return
@@ -2150,7 +2097,7 @@ def page_violation_statistics():
 
     # 检查是否有数据文件
     if st.session_state.uploaded_file is None and st.session_state.local_file_path is None:
-        st.warning("⚠️ 请先上传或选择数据文件")
+        st.warning("⚠️ 请先上传数据文件")
         if st.button("📤 前往上传数据文件", use_container_width=True):
             st.session_state.current_page = "上传数据文件"
             st.rerun()
@@ -2162,7 +2109,7 @@ def page_violation_statistics():
         if st.session_state.uploaded_file is not None:
             df = st.session_state.uploaded_file
         elif st.session_state.local_file_path is not None:
-            df = read_csv_safe(st.session_state.local_file_path)
+            df = pd.read_csv(st.session_state.local_file_path)
     except Exception as e:
         st.error(f"❌ 读取数据失败: {e}")
         return
@@ -2630,9 +2577,11 @@ def page_analysis_settings():
 
     with col2:
         if st.button("🔄 重新加载当前文件", use_container_width=True, type="secondary"):
-            if st.session_state.local_file_path is not None:
+            if st.session_state.uploaded_file is not None:
+                st.info("ℹ️ 上传的文件已加载")
+            elif st.session_state.local_file_path is not None:
                 try:
-                    df = read_csv_safe(st.session_state.local_file_path)
+                    df = pd.read_csv(st.session_state.local_file_path)
                     if df is not None:
                         st.session_state.uploaded_file = df
                         st.success("✅ 文件重新加载成功")
@@ -2640,10 +2589,8 @@ def page_analysis_settings():
                         st.error("❌ 重新加载失败")
                 except Exception as e:
                     st.error(f"❌ 重新加载失败: {e}")
-            elif st.session_state.uploaded_file is not None:
-                st.info("ℹ️ 上传的文件已加载")
-        if st.button("🔄 重新加载当前文件", use_container_width=True, type="secondary"):
-            pass
+            else:
+                st.warning("⚠️ 没有可重新加载的文件")
 
     with col3:
         if st.button("💾 保存当前设置", use_container_width=True, type="primary"):
@@ -2659,7 +2606,7 @@ def page_analysis_settings():
     with st.expander("🚀 使用步骤", expanded=False):
         st.markdown("""
         **使用步骤**
-        1. **上传数据文件**：在"上传数据文件"页面上传CSV数据文件或从本地目录选择
+        1. **上传数据文件**：在"上传数据文件"页面上传CSV数据文件
         2. **选择分析页面**：使用侧边栏导航选择"违规率分析"或"违规率统计"
         3. **查看分析结果**：系统将自动分析数据并显示结果
         4. **导出分析报告**：下载完整的分析报告和数据
