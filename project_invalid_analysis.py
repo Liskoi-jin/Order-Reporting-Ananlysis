@@ -8,6 +8,10 @@ from collections import defaultdict
 import plotly.express as px
 import plotly.graph_objects as go
 
+# 清空Streamlit所有缓存，部署后自动生效，彻底禁用缓存
+st.cache_data.clear()
+st.cache_resource.clear()
+
 # 设置页面配置
 st.set_page_config(
     page_title="项目数据分析看板",
@@ -2717,4 +2721,5 @@ def main():
 # 运行应用
 if __name__ == "__main__":
     main()
+
 
